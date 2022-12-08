@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import pandas as pd
 from verbecc import Conjugator
 from tqdm import tqdm
 
@@ -27,6 +28,31 @@ def create_from_txts(path2txts):
         lines = np.delete(lines, delete_indices).tolist()
         spanish_lines = lines[::2]
         all_lines += spanish_lines
+
+    singular_nouns = []
+    plural_nouns = []
+    for word in all_lines:
+        # nouns in list have la/ el
+        if word.startswith('la ') or word.startswith('el ') or word.startswith('el/la '):
+            singular_nouns.append(word)
+            pre, noun = word.split(' ')[0], word.split(' ')[1]
+            if pre == 'la':
+                pre = 'las'
+            elif pre == 'el':
+                pre = 'los'
+            if noun[-1] in ['a', 'e', 'i', 'o', 'u']:
+                plural_nouns.append(f'{pre} {noun}s')
+            else:
+                plural_nouns.append(f'{pre} {noun}es')
+
+    dict_sgl_pl = {
+        'singular': singular_nouns,
+        'plural': plural_nouns
+    }
+
+    df = pd.DataFrame.from_dict(dict_sgl_pl)
+    df.to_csv('singular-to-plural.csv')
+
 
     # Get unique words in list
     all_words = ' '.join(all_lines)
@@ -81,8 +107,8 @@ def write_to_txt(filename, wordlist):
 def main():
 
     words = create_from_txts(path2txts='wordlists')
-    all_words = conjugate_words(words)
-    write_to_txt(filename='spanish-word-list.txt', wordlist=all_words)
+    # all_words = conjugate_words(words)
+    # write_to_txt(filename='spanish-word-list.txt', wordlist=all_words)
 
 
 if __name__ == '__main__':

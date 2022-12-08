@@ -135,7 +135,19 @@
                                     <div class="input-group-append">
                                         <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
                                     </div>
-                                    <textarea name="msg" class="form-control type_msg" placeholder="Type your message..."></textarea>
+                                    <div class="form-control type_msg_contain">
+                                        <div class="type_msg_contain select_word_contain">
+                                            <label for="word1"></label>
+                                            <input type="text" id="word1" class="select_word" readonly>
+
+                                            <label for="word2"></label>
+                                            <input type="text" id="word2" class="select_word" readonly>
+
+                                            <label for="word3"></label>
+                                            <input type="text" id="word3" class="select_word" readonly>
+                                        </div>
+                                        <textarea name="msg" class="form-control type_msg_contain type_msg" placeholder="Type your message..." id="msg_id"></textarea>
+                                    </div>
                                     <div class="input-group-append">
                                         <button type="submit" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
                                     </div>
@@ -160,5 +172,6 @@
             $('#chatmessages')[0].scrollTop = $('#chatmessages')[0].scrollHeight;
         });
     </script>
+    <script src="{% static 'bot/functionalities.js' %}"></script>
 	</body>
 </html>
