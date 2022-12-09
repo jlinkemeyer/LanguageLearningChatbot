@@ -2,6 +2,7 @@ class Bot:
 
     name = 'Perroquet'
     avatar = 'avatar/perroquet.png'
+    language = 'spanish'
 
     def welcome(self):
         return "Bonjour! Je vais répéter tout ce que tu dis."

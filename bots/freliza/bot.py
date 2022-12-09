@@ -8,6 +8,7 @@ class Bot:
 
     name = 'French Eliza'
     avatar = 'avatar/perroquet.png'
+    language = 'french'
 
     def __init__(self):
         self.rogers = Rogers()

@@ -73,6 +73,12 @@ class RestartChat(LoginRequiredMixin, View):
 class Index(LoginRequiredMixin, View):
     """The main view. Simply shows chat for now."""
 
+    def get_context_data(self, **kwargs):
+        print('hi')
+        context = super(Index, self).get_context_data(**kwargs)
+        context['autocompletions'] = self.get_autocomplete()
+        return context
+
     def post(self, request, chatid):
         try:
             chatsession = ChatSession.objects.get(pk=chatid, user=request.user)
@@ -116,5 +122,14 @@ class Index(LoginRequiredMixin, View):
                     return HttpResponseBadRequest(f"Chat session #{chatid} doest not exist for user {request.user.username}")
 
         chatmessages = ChatMessage.objects.filter(session=chatsession)
+
         return render(request, 'bot/index.html', locals())
+
+    def get_autocomplete(self):
+        # load txt
+        filepath = r'C:\Users\johan\PycharmProjects\chatbot-seminar\LanguageLearningChatbot\chat\spanish-word-list.txt'
+        with open(filepath, 'r', encoding='utf8') as f:
+            lines = [line.strip() for line in f.readlines()]
+        print(lines)
+        return lines
 

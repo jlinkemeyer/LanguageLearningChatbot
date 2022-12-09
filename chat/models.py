@@ -7,6 +7,7 @@ class Bot(models.Model):
     classpath = models.CharField(max_length=512, null=False)
     avatar = models.CharField(max_length=1024, null=True)
     active = models.BooleanField(default=True)
+    language = models.CharField(max_length=10, null=False, default='spanish')
 
 
 class ChatSession(models.Model):

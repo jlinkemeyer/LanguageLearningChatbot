@@ -1,1 +1,4 @@
 django
+verbecc
+tqdm
+numpy
