@@ -42,6 +42,16 @@ function resetWordSuggestions(words) {
     })
 }
 
+function setSuggestionValue(word, similarWords, idx) {
+    if (similarWords.length >= idx + 1) {
+        word.style.cursor = 'pointer'
+        word.value = similarWords[idx]
+    } else {
+        word.value = ''
+        word.style.cursor = 'text'
+    }
+}
+
 // Get user input (from last space)
 var message_area = document.getElementById('msg_id')
 var wordSuggestions = [word1, word2, word3]
@@ -79,27 +89,9 @@ message_area.addEventListener('keyup', () => {
     }
 
     // Display three (or more/ less) words to select from
-    if (threeMostSimilar.length >= 1) {
-        word1.style.cursor = 'pointer'
-        word1.value = threeMostSimilar[0]
-    } else {
-        word1.value = ''
-        word1.style.cursor = 'text'
-    }
-    if (threeMostSimilar.length >= 2) {
-        word2.style.cursor = 'pointer'
-        word2.value = threeMostSimilar[1]
-    } else {
-        word2.value = ''
-        word2.style.cursor = 'text'
-    }
-    if (threeMostSimilar.length >= 3) {
-        word3.style.cursor = 'pointer'
-        word3.value = threeMostSimilar[2]
-    } else {
-        word3.value = ''
-        word3.style.cursor = 'text'
-    }
+    setSuggestionValue(word1, threeMostSimilar, 0)
+    setSuggestionValue(word2, threeMostSimilar, 1)
+    setSuggestionValue(word3, threeMostSimilar, 2)
 })
 
 // TODO: Problem: what about lower/ upper case?
