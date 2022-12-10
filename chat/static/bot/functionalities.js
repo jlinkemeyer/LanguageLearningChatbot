@@ -92,8 +92,13 @@ message_area.addEventListener('keyup', () => {
         threeMostSimilar = findMostSimilar(currentWord, wordlist)
     }
 
+    var previousWord = ''
+    if (currentInput.length >= 2) {
+        previousWord = currentInput[currentInput.length - 2]
+    }
+
     var toUpper = false
-    if (currentInput.length <= 1) {
+    if ((currentInput.length <= 1) || (previousWord.endsWith('.')) || (previousWord.endsWith('?')) || (previousWord.endsWith('!')) ) {
         toUpper = true
     }
 
