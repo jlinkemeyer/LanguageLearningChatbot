@@ -57,6 +57,7 @@ def find_active_bots(request):
         bot.save()
         messages.info(request, f"Bot {name} wurde deaktiviert.")
 
+
 class RestartChat(LoginRequiredMixin, View):
 
     def get(self, request, chatid):
@@ -74,8 +75,7 @@ class Index(LoginRequiredMixin, View):
     """The main view. Simply shows chat for now."""
 
     def get_context_data(self, **kwargs):
-        print('hi')
-        context = super(Index, self).get_context_data(**kwargs)
+        context = {} # super(Index, self).get_context_data()
         context['autocompletions'] = self.get_autocomplete()
         return context
 
@@ -123,6 +123,8 @@ class Index(LoginRequiredMixin, View):
 
         chatmessages = ChatMessage.objects.filter(session=chatsession)
 
+        context = self.get_context_data()
+
         return render(request, 'bot/index.html', locals())
 
     def get_autocomplete(self):
@@ -130,6 +132,5 @@ class Index(LoginRequiredMixin, View):
         filepath = r'C:\Users\johan\PycharmProjects\chatbot-seminar\LanguageLearningChatbot\chat\spanish-word-list.txt'
         with open(filepath, 'r', encoding='utf8') as f:
             lines = [line.strip() for line in f.readlines()]
-        print(lines)
         return lines
 

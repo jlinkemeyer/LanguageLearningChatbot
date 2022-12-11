@@ -4,10 +4,7 @@
 * Step 3: Display three nearest neighbors and replace current word upon click
 */
 
-// TODO Read list from text file
-var wordlist = ['comorens', 'comensnsddd', 'Cómerase', 'Cómo', 'comen', 'come']
-// wordlist_t = ['como', 'comen', 'comer', 'come']
-console.log(wordlist)
+// wordlist is read from context data (stored in variable wordlist)
 
 var word1 = document.getElementById('word1')
 var word2 = document.getElementById('word2')
