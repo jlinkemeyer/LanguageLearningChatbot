@@ -1,13 +1,10 @@
-# from transformers import pipeline, set_seed
 from translate import Translator
 from happytransformer import HappyGeneration, GENSettings
-import transformers
 
 
 class Bot:
-
-    name = 'GPT Bot'
-    language ='spanish'
+    name = 'GPT2'
+    language = 'spanish'
 
     def __init__(self):
         self.model = self.load_model()
@@ -19,11 +16,11 @@ class Bot:
         Leah visits Barcelona as an exchange student. She meets Bot. Both are 13 years old. They plan a picnic with a group of friends.
         Bot likes to eat patatas bravas and choco frito, but dislikes eating caracoles.
         Bot is going to bring Tortilla de jamon y queso and horchata to the picnic.
-        
+
         They still have to decide for other food. The picnic takes place at 3pm in a park. 
-        
+
         Bot: Hi Leah, how are you?
-        
+
         """
 
     def welcome(self):
@@ -53,23 +50,6 @@ class Bot:
             answers = self.model.generate_text(self.session, args=self.args)
 
             print(answers)
-
-            # Retranslate
-            translated_answers = []
-            for answer in answers:
-                translated_answers.append(self.enToEs.translate(answer['generated_text']))
-
-            # Filter for words
-            for translated_answer in translated_answers:
-                if all(word in self.wordlist for word in translated_answers.split()) and translated_answer.startswith('Bot: '):
-                    answer = translated_answer
-                    break
-            if answer != '':
-                break
-        # remove bot: from answer
-        answer = answer.replace('Bot:', '')
-        # append answer to session
+        answer = answers[0]
         self.session += answer + '\n'
         return answer
-
-

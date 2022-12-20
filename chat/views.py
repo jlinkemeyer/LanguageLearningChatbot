@@ -18,37 +18,39 @@ def find_active_bots(request):
     # and deactivate missing or corrupt ones
     botdirs = [f.name for f in os.scandir('bots') if f.is_dir()]
     for botdir in botdirs:
+        #try:
+        botmodule = importlib.import_module(f"bots.{botdir}.bot")
+        name = botmodule.Bot.name
+        print(name)
         try:
-            botmodule = importlib.import_module(f"bots.{botdir}.bot")
-            name = botmodule.Bot.name
-            try:
-                bot = Bot.objects.get(name=name)
-                if not bot.active:  # former inactive bot activated
-                    bot.name = name
-                    bot.active = True
-                    bot.save()
-                try:
-                    deactivate.remove(name)  # remove active bot from deactivation list
-                    messages.info(request, f"Bot {name} wurde deaktiviert.")
-                except ValueError:  # new bot
-                    messages.info(request, f"Bot {name} wurde wieder aktiviert.")
-            except Bot.DoesNotExist:
-                # create a new bot
-                bot = Bot.objects.create(name=name, classpath=f"bots.{botdir}.bot", active=True)
-                messages.info(request, f"Bot {name} wurde registriert und aktiviert.")
-                pass
-            avatar = None
-            try:
-                avatar = botmodule.Bot.avatar
-            except ValueError:
-                pass
-            if avatar and avatar!=bot.avatar:
-                bot.avatar = avatar
+            bot = Bot.objects.get(name=name)
+            print(bot.name)
+            if not bot.active:  # former inactive bot activated
+                bot.name = name
+                bot.active = True
                 bot.save()
-        except ModuleNotFoundError:  # no bot.py file in folder
-            print(f"bot.py missing for {botdir}")
-        except AttributeError:  # no name in Bot class
-            print(f"bot.py has no class Bot or name attribute in Bot class for {botdir}")
+            try:
+                deactivate.remove(name)  # remove active bot from deactivation list
+                messages.info(request, f"Bot {name} wurde deaktiviert.")
+            except ValueError:  # new bot
+                messages.info(request, f"Bot {name} wurde wieder aktiviert.")
+        except Bot.DoesNotExist:
+            # create a new bot
+            bot = Bot.objects.create(name=name, classpath=f"bots.{botdir}.bot", active=True)
+            messages.info(request, f"Bot {name} wurde registriert und aktiviert.")
+            pass
+        avatar = None
+        try:
+            avatar = botmodule.Bot.avatar
+        except AttributeError:
+            pass
+        if avatar and avatar!=bot.avatar:
+            bot.avatar = avatar
+            bot.save()
+        #except ModuleNotFoundError:  # no bot.py file in folder
+        #    print(f"bot.py missing for {botdir}")
+        #except AttributeError:  # no name in Bot class
+        #    print(f"bot.py has no class Bot or name attribute in Bot class for {botdir}")
 
     # deactivate all active bots that were not found
     for d in deactivate:

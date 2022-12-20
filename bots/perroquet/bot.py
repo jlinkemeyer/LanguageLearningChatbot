@@ -5,7 +5,7 @@ class Bot:
     language = 'spanish'
 
     def welcome(self):
-        return "Bonjour! Je vais répéter tout ce que tu dis."
+        return "Hola! Cómo estás?"
 
     def chat(self, last_user_message, session):
         return last_user_message
