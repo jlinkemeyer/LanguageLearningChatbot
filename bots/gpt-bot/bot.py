@@ -1,4 +1,4 @@
-# from transformers import pipeline, set_seed
+from transformers import pipeline, set_seed
 from translate import Translator
 from happytransformer import HappyGeneration, GENSettings
 import transformers
@@ -38,11 +38,10 @@ class Bot:
     def load_model(self):
         # generator = pipeline('text-generation', model='gpt2')
         # set_seed(42)
-        generator = HappyGeneration("GPT2", "gpt2-xl")  # Best performance
+        generator = HappyGeneration("GPT2", "gpt2-medium")  # Best performance
         return generator
 
     def chat(self, last_user_message, session):
-        # Receive user input, append this to session storage
         translated_message = self.esToEn.translate(last_user_message)
         self.session += "Leah:" + translated_message + '\n'
 
@@ -61,7 +60,10 @@ class Bot:
 
             # Filter for words
             for translated_answer in translated_answers:
-                if all(word in self.wordlist for word in translated_answers.split()) and translated_answer.startswith('Bot: '):
+                if all(word in self.wordlist for word in translated_answer.split()) and translated_answer.startswith('Bot: '):
+                    answer = translated_answer
+                    break
+                if sum(1 for word in translated_answer.lower().split() if word.split("'?!") in self.wordlist)/len(translated_answer.split()) > 0.9 and translated_answer.startswith('Bot: '):
                     answer = translated_answer
                     break
             if answer != '':
