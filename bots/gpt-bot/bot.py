@@ -60,9 +60,9 @@ class Bot:
 
             # Filter for words
             for translated_answer in translated_answers:
-                if all(word in self.wordlist for word in translated_answer.split()) and translated_answer.startswith('Bot: '):
-                    answer = translated_answer
-                    break
+                # if all(word in self.wordlist for word in translated_answer.split()) and translated_answer.startswith('Bot: '):
+                #     answer = translated_answer
+                #     break
                 if sum(1 for word in translated_answer.lower().split() if word.split("'?!") in self.wordlist)/len(translated_answer.split()) > 0.9 and translated_answer.startswith('Bot: '):
                     answer = translated_answer
                     break
