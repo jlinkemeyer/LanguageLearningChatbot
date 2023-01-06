@@ -171,6 +171,14 @@
             });
             $('#chatmessages')[0].scrollTop = $('#chatmessages')[0].scrollHeight;
         });
+
+        // List of word suggestions
+        var wordlist = []
+        {% if context.autocompletions %}
+            {% for i in context.autocompletions %}
+                wordlist.push("{{ i }}")
+            {% endfor %}
+        {% endif %}
     </script>
     <script src="{% static 'bot/functionalities.js' %}"></script>
 	</body>

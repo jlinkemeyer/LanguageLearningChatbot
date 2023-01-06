@@ -4,10 +4,7 @@
 * Step 3: Display three nearest neighbors and replace current word upon click
 */
 
-// TODO Read list from text file
-var wordlist = ['comorens', 'comensnsddd', 'Cómerase', 'Cómo', 'comen', 'come']
-// wordlist_t = ['como', 'comen', 'comer', 'come']
-console.log(wordlist)
+// wordlist is read from context data (stored in variable wordlist)
 
 var word1 = document.getElementById('word1')
 var word2 = document.getElementById('word2')
@@ -42,6 +39,20 @@ function resetWordSuggestions(words) {
     })
 }
 
+function setSuggestionValue(word, similarWords, idx, uppercase) {
+    if (similarWords.length >= idx + 1) {
+        word.style.cursor = 'pointer'
+        if (uppercase) {
+            word.value = similarWords[idx][0].toUpperCase() + similarWords[idx].substring(1);
+        } else {
+            word.value = similarWords[idx]
+        }
+    } else {
+        word.value = ''
+        word.style.cursor = 'text'
+    }
+}
+
 // Get user input (from last space)
 var message_area = document.getElementById('msg_id')
 var wordSuggestions = [word1, word2, word3]
@@ -69,6 +80,10 @@ message_area.addEventListener('keyup', () => {
     var currentInput = message_area.value.split(' ')
     var currentWord = currentInput[currentInput.length - 1]
 
+    if (currentWord == '.' || currentWord == '?' || currentWord == '!') {
+        message_area.value = currentInput.slice(0, currentInput.length - 1).join(' ') + currentWord
+    }
+
     // Make lower caps
     currentWord = normalizeWord(currentWord)
 
@@ -78,28 +93,20 @@ message_area.addEventListener('keyup', () => {
         threeMostSimilar = findMostSimilar(currentWord, wordlist)
     }
 
+    var previousWord = ''
+    if (currentInput.length >= 2) {
+        previousWord = currentInput[currentInput.length - 2]
+    }
+
+    var toUpper = false
+    if ((currentInput.length <= 1) || (previousWord.endsWith('.')) || (previousWord.endsWith('?')) || (previousWord.endsWith('!')) ) {
+        toUpper = true
+    }
+
     // Display three (or more/ less) words to select from
-    if (threeMostSimilar.length >= 1) {
-        word1.style.cursor = 'pointer'
-        word1.value = threeMostSimilar[0]
-    } else {
-        word1.value = ''
-        word1.style.cursor = 'text'
-    }
-    if (threeMostSimilar.length >= 2) {
-        word2.style.cursor = 'pointer'
-        word2.value = threeMostSimilar[1]
-    } else {
-        word2.value = ''
-        word2.style.cursor = 'text'
-    }
-    if (threeMostSimilar.length >= 3) {
-        word3.style.cursor = 'pointer'
-        word3.value = threeMostSimilar[2]
-    } else {
-        word3.value = ''
-        word3.style.cursor = 'text'
-    }
+    setSuggestionValue(word1, threeMostSimilar, 0, toUpper)
+    setSuggestionValue(word2, threeMostSimilar, 1, toUpper)
+    setSuggestionValue(word3, threeMostSimilar, 2, toUpper)
 })
 
 // TODO: Problem: what about lower/ upper case?
