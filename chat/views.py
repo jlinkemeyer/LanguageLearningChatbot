@@ -131,7 +131,7 @@ class Index(LoginRequiredMixin, View):
 
     def get_autocomplete(self):
         # load txt
-        filepath = r'C:\Users\johan\PycharmProjects\chatbot-seminar\LanguageLearningChatbot\chat\spanish-word-list.txt'
+        filepath = r'dictionaries/spanish-word-list.txt'
         with open(filepath, 'r', encoding='utf8') as f:
             lines = [line.strip() for line in f.readlines()]
         return lines

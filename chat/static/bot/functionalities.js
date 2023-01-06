@@ -80,7 +80,7 @@ message_area.addEventListener('keyup', () => {
     var currentInput = message_area.value.split(' ')
     var currentWord = currentInput[currentInput.length - 1]
 
-    if (currentWord == '.' || currentWord == '?' || currentWord == '!') {
+    if (currentWord == '.' || currentWord == '?' || currentWord == '!' || currentWord == ',') {
         message_area.value = currentInput.slice(0, currentInput.length - 1).join(' ') + currentWord
     }
 

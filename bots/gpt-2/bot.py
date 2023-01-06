@@ -36,7 +36,7 @@ class Bot:
         return "Hola, ¿qué tal?"
 
     def load_word_list(self):
-        with open(r'C:\Users\johan\PycharmProjects\chatbot-seminar\LanguageLearningChatbot\dictionaries\spanish-word-list.txt', 'r', encoding='utf-8') as f:
+        with open(r'dictionaries/spanish-word-list.txt', 'r', encoding='utf-8') as f:
             text = [self.remove_accents(line.strip()) for line in f.readlines()]
             # text.append('Bot:')
         return text
