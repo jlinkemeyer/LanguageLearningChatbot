@@ -1,0 +1,5 @@
+django
+verbecc
+tqdm
+numpy
+nltk

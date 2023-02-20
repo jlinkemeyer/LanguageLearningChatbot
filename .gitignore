@@ -1,0 +1,10 @@
+db.sqlite3
+
+*.txt
+*.csv
+
+/old-bots/
+/data/create-new-wordlists/
+
+!data/es.txt
+!data/fr.txt
