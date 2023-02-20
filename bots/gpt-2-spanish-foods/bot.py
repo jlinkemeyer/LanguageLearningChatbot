@@ -4,7 +4,7 @@ from ..SuperBot import SuperBot
 class Bot(SuperBot):
     name = 'Fernanda (Essen)'
     language = 'es'
-    avatar = 'avatar/spanish.png'
+    avatar = 'avatar/spain.png'
 
     def __init__(self):
         SuperBot.__init__(self,
