@@ -82,6 +82,27 @@ class SuperBot:
                 a = answer.split('\n')[0]  # Does not consider everything after a newline expression
                 a = a.split('Leah:')[0]  # Neglect generated answers from Leah
                 a = a.replace('Bot: ', '').replace('Bot:', '')  # Bot should not be in answer when its being processed
+                a_sentences = []
+                for i in a.split('.'):
+                    if not i.endswith('!') and not i.endswith('?'):
+                        i = i + '.'
+                    for j in i.split('!'):
+                        if not j.endswith('.') and not j.endswith('?'):
+                            j = j + '!'
+                        # print(j)
+                        for x in j.split('?'):
+                            if not x.endswith('.') and not x.endswith('!'):
+                                x = x + '?'
+                            if x == '.' or x == '!' or x == '?':
+                                continue
+                            if x.startswith(' '):
+                                a_sentences.append(x[1:])
+                            else:
+                                a_sentences.append(x)
+                if len(a_sentences[0]) < 3:
+                    a = a_sentences[0] + ' ' + a_sentences[1]
+                else:
+                    a = a_sentences[0]
 
                 if len(a.split()) > 0:  # If there are words left in the answer
                     # translate english prediction to target language
