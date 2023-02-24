@@ -1,9 +1,13 @@
+import os.path
+
 from googletrans import Translator
 from happytransformer import HappyGeneration, GENSettings
 import unicodedata
 import re
 import nltk
 import difflib
+import time
+import pandas as pd
 
 
 class SuperBot:
@@ -67,17 +71,39 @@ class SuperBot:
         :return:
         """
 
+        csv_path = r'C:\Users\johan\PycharmProjects\chatbot-seminar\LanguageLearningChatbot\data\file.csv'
+
+        if not os.path.exists(csv_path):
+            df_dict = {
+                'TranslationToEnglish': [],
+                'AnswerGeneration': [],
+                'TranslationToTarget': [],
+                'TotalTime': []
+            }
+        else:
+            df = pd.read_csv(csv_path, index_col=False)
+            df_dict = df.to_dict('list')
+
+        starttime = time.time()
+
         # Receive user input, append this to session storage
         translated_message = self.translator.translate(last_user_message,
                                                        src=self.target_language,
                                                        dest='en').text
         self.session += "Leah:" + translated_message + '\n'
 
+        intermediate_time_1 = time.time() - starttime
+        df_dict['TranslationToEnglish'].append([intermediate_time_1])
+
         # Generate an answers using gpt-2-spanish-foods
         final_answer = ''
+        for_answer_generation = []
+        for_translation = []
         while final_answer == '':
+            current_time = time.time()
             answers = self.model.generate_text(self.session, args=self.args)
             answer = answers.text
+            for_answer_generation.append(time.time() - current_time)
             if answer.startswith('Bot:'):
                 a = answer.split('\n')[0]  # Does not consider everything after a newline expression
                 a = a.split('Leah:')[0]  # Neglect generated answers from Leah
@@ -106,7 +132,9 @@ class SuperBot:
 
                 if len(a.split()) > 0:  # If there are words left in the answer
                     # translate english prediction to target language
+                    translation_starttime = time.time()
                     answer_target_lang = self.translator.translate(a, src='en', dest=self.target_language).text
+                    for_translation.append(time.time() - translation_starttime)
 
                     # Check how many similar words there are in the generated answer and the given
                     # (predefined) word list
@@ -127,4 +155,14 @@ class SuperBot:
                         break
 
         self.session += 'Bot: ' + a + '\n'
+
+        df_dict['AnswerGeneration'].append(for_answer_generation)
+        df_dict['TranslationToTarget'].append(for_translation)
+
+        endtime = time.time() - starttime
+        df_dict['TotalTime'].append([endtime])
+
+        df = pd.DataFrame.from_dict(df_dict)
+        df.to_csv(csv_path, index=False)
+
         return final_answer
