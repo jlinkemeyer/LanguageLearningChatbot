@@ -12,14 +12,18 @@ import pandas as pd
 
 class SuperBot:
 
-    def __init__(self, wordlist_path, welcome_message, session, target_language, similarity_score=0.85):
+    def __init__(self,
+                 wordlist_path: str,
+                 welcome_message: str,
+                 session: str,
+                 target_language: str,
+                 similarity_score: float = 0.85):
         """
-
-        :param wordlist_path:
-        :param welcome_message:
-        :param session:
+        :param wordlist_path: path to the wordlist for word filtering
+        :param welcome_message: message from Bot upon chat start
+        :param session: text from the current chat session
         :param target_language: either 'es' for spanish or 'fr' for french
-        :param similarity_score:
+        :param similarity_score: portion of words that has to be contained in wordlist
         """
         self.model = self.load_model()
         self.args = GENSettings(max_length=30, early_stopping=True, do_sample=True, top_k=80)
@@ -31,13 +35,9 @@ class SuperBot:
         self.similarity_score = similarity_score
 
     def welcome(self):
-        """
-
-        :return:
-        """
         return self.welcome_message
 
-    def load_word_list(self, path2wordlist):
+    def load_word_list(self, path2wordlist: list[str]):
         """
 
         :param path2wordlist:
@@ -49,29 +49,33 @@ class SuperBot:
 
     def load_model(self):
         """
-
-        :return:
+        Load the generator model (here: GPT-2 medium)
+        :return: HappyGeneration model
         """
         generator = HappyGeneration("GPT2", "gpt2-medium")
         return generator
 
-    def remove_accents(self, text=''):
+    def remove_accents(self, text: str = ''):
         """
-
-        :param text:
-        :return:
+        Removes accents from a given string
+        :param text: text to remove accents from
+        :return: accent-free text
         """
         text = unicodedata.normalize('NFD', text).encode('ascii', 'ignore').decode("utf-8")
         return str(text)
 
     def chat(self, last_user_message, session):
         """
-
-        :param last_user_message:
-        :return:
+        Based on the previous chat, uses the GPT-2 model to generate a new answer from the
+        Bot after the user entered a message. Returns the first generated answer that comprises
+        of a specific portion of words contained in the Bot's wordlist.
+        :param last_user_message: last message entered by user
+        :return: chatbot's answer
         """
 
-        csv_path = r'C:\Users\johan\PycharmProjects\chatbot-seminar\LanguageLearningChatbot\data\file.csv'
+        if not os.path.exists(r'data'):
+            os.mkdir(r'data')
+        csv_path = r'data/file.csv'
 
         if not os.path.exists(csv_path):
             df_dict = {
