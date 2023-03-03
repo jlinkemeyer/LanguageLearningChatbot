@@ -125,10 +125,16 @@ class SuperBot:
                                 a_sentences.append(x[1:])
                             else:
                                 a_sentences.append(x)
-                if len(a_sentences[0]) < 3:
-                    a = a_sentences[0] + ' ' + a_sentences[1]
-                else:
-                    a = a_sentences[0]
+                try:
+                    if len(a_sentences[0]) < 3:
+                        try:
+                            a = a_sentences[0] + ' ' + a_sentences[1]
+                        except:
+                            a = a_sentences[0]
+                    else:
+                        a = a_sentences[0]
+                except:
+                    continue # If there is no answer?
 
                 if len(a.split()) > 0:  # If there are words left in the answer
                     # translate english prediction to target language

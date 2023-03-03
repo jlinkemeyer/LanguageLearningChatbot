@@ -8,7 +8,7 @@ class Bot(SuperBot):
 
     def __init__(self):
         SuperBot.__init__(self,
-                          wordlist_path='data/fr.txt',
+                          wordlist_path='data/fr.txt', # 'data/fr.txt',
                           welcome_message='Bonjour comment allez-vous?',
                           session='''
                           Leah visits Paris. Leah is an exchange student. Leah is from 

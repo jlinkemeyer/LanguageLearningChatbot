@@ -5,6 +5,7 @@ db.sqlite3
 
 /old-bots/
 /data/create-new-wordlists/
+/data
 
 !data/es.txt
 !data/fr.txt

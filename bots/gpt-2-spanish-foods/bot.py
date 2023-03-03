@@ -8,7 +8,7 @@ class Bot(SuperBot):
 
     def __init__(self):
         SuperBot.__init__(self,
-                          wordlist_path='data/es.txt',
+                          wordlist_path='data/es.txt', # or 'data/es.txt',
                           welcome_message='Hola, ¿qué tal?',
                           session=
                           """

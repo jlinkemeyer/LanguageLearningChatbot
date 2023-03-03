@@ -9,9 +9,9 @@ import os
 import importlib
 
 PATHS2WORDLISTS = {
-    'Fernanda (Essen)': r'data/es.txt',
-    'Zara (Kleidung)': r'data/es.txt',
-    'Coco (Kleidung)': r'data/fr.txt'
+    'Fernanda (Essen)': r'data/es.txt', # r'data/es.txt',
+    'Zara (Kleidung)': r'data/es.txt', # r'data/es.txt',
+    'Coco (Kleidung)': r'data/fr.txt', # r'data/fr.txt'
 }
 
 def find_active_bots(request):
